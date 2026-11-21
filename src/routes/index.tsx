@@ -395,16 +395,63 @@ function PhishGuardPage() {
                   </>
                 ) : (
                   <>
-                    <Field icon={<Globe2 className="size-4" />} label="Website address">
-                      <input type="url" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.target.value)} placeholder="https://example.com" className="w-full bg-transparent text-foreground placeholder:text-muted-foreground/60 focus:outline-none" />
-                    </Field>
-                    <div className="rounded-lg border border-border bg-background/40 p-4">
-                      <label className="mb-2 flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground">
-                        <FileSearch className="size-3.5" /> Page text (optional)
+                    <div className="space-y-5">
+                      <div className="flex items-start gap-3 border-b border-border pb-4">
+                        <div className="flex size-11 shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
+                          <Globe2 className="size-5" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="font-mono text-[11px] uppercase text-primary">Website risk check</div>
+                          <h3 className="mt-1 text-lg font-semibold">Review a suspicious website</h3>
+                          <p className="mt-1 text-sm text-muted-foreground">Assess the address and any page text you choose to share.</p>
+                        </div>
+                        <span className="hidden shrink-0 rounded-md border border-border px-2 py-1 font-mono text-[10px] uppercase text-muted-foreground sm:inline-flex">URL + text</span>
+                      </div>
+
+                      <label className="block" htmlFor="website-address">
+                        <span className="flex items-center justify-between gap-3 text-xs uppercase text-muted-foreground">
+                          <span>Website address</span>
+                          <span className="font-mono text-[10px]">HTTP / HTTPS</span>
+                        </span>
+                        <span className="mt-2 flex items-center gap-3 rounded-lg border border-border bg-background/60 px-4 py-3 transition focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20">
+                          <Globe2 className="size-4 shrink-0 text-primary" />
+                          <input
+                            id="website-address"
+                            aria-label="Website address"
+                            type="url"
+                            maxLength={2048}
+                            value={websiteUrl}
+                            onChange={(e) => setWebsiteUrl(e.target.value)}
+                            placeholder="https://example.com"
+                            className="min-w-0 w-full bg-transparent text-foreground placeholder:text-muted-foreground/60 focus:outline-none"
+                          />
+                        </span>
                       </label>
-                      <textarea value={pageContent} onChange={(e) => setPageContent(e.target.value)} placeholder="Paste visible page text if you want it assessed too" rows={7} className="w-full resize-y bg-transparent font-mono text-sm focus:outline-none placeholder:text-muted-foreground/50" />
+
+                      <div className="rounded-lg border border-border bg-background/40 p-4">
+                        <div className="mb-2 flex items-center justify-between gap-3">
+                          <label htmlFor="website-page-content" className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+                            <FileSearch className="size-3.5" /> Page text <span className="text-muted-foreground/70">optional</span>
+                          </label>
+                          <span className="shrink-0 font-mono text-[10px] text-muted-foreground">{pageContent.length.toLocaleString()} / 10,000</span>
+                        </div>
+                        <textarea
+                          id="website-page-content"
+                          aria-label="Page text (optional)"
+                          value={pageContent}
+                          onChange={(e) => setPageContent(e.target.value)}
+                          placeholder="Paste visible page text if you want it assessed too"
+                          rows={6}
+                          maxLength={10000}
+                          className="w-full resize-y bg-transparent font-mono text-sm leading-relaxed focus:outline-none placeholder:text-muted-foreground/50"
+                        />
+                      </div>
+
+                      <div className="flex items-start gap-2 border-t border-border pt-4 text-xs leading-relaxed text-muted-foreground">
+                        <Lock className="mt-0.5 size-3.5 shrink-0 text-primary" />
+                        <p>PhishGuard assesses only the address and text you provide. It does not open or fetch the website.</p>
+                      </div>
                     </div>
-                    <p className="text-xs text-muted-foreground">The website is not opened or fetched. Assessment is limited to the URL and any page text you provide.</p>
                   </>
                 )}
 
