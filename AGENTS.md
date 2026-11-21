@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Migration architecture
+- Keep client-invoked analysis in `src/lib/*.functions.ts`, with shared input and result schemas in `src/lib/*.schema.ts`; require a verified Cloud session before calling the Gemini connector so email content and credentials remain server-side.
+
+Why: TanStack server functions are the supported boundary for authenticated, secret-backed application work.
