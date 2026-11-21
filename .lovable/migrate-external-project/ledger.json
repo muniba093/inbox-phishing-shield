@@ -1,0 +1,103 @@
+{
+  "source": "code archive: phishguard-ai-main.zip",
+  "capabilities": [
+    {
+      "capability": "code",
+      "source": "TanStack Start app with PhishGuard email analysis, sample messages, recent scan history, and PDF export",
+      "outcome": "Recreate in the Lovable project",
+      "status": "in_progress",
+      "next_action": "Port the routes, interface, and analysis workflow; verify the preview"
+    },
+    {
+      "capability": "schema",
+      "source": "Supabase project reference in supabase/config.toml; no schema, migrations, or application tables were present in the archive",
+      "outcome": "No application schema detected",
+      "status": "verified",
+      "next_action": "Confirm whether any application tables exist when the source export is available"
+    },
+    {
+      "capability": "records",
+      "source": "Supabase; no record export attached; scan history is kept only in page memory",
+      "outcome": "Existing database records are not included in the preview",
+      "status": "pending",
+      "next_action": "Request sanitized CSV or JSON exports after the preview, or user acceptance to skip"
+    },
+    {
+      "capability": "auth identities",
+      "source": "Supabase Auth; email/password and Google sign-in; no user export attached",
+      "outcome": "Migrate identities to Lovable authentication with first-visit email verification and password setup",
+      "status": "pending",
+      "next_action": "Request user export containing original IDs and email addresses after the preview"
+    },
+    {
+      "capability": "authorization",
+      "source": "The source checks sign-in in the interface but the analysis server function has no server-side auth check",
+      "outcome": "Require an authenticated Lovable user at the analysis server boundary",
+      "status": "in_progress",
+      "next_action": "Implement and verify the server-side identity check"
+    },
+    {
+      "capability": "uploaded file bytes",
+      "source": "No uploaded file or storage usage detected",
+      "outcome": "No file bytes to migrate",
+      "status": "verified",
+      "next_action": "None"
+    },
+    {
+      "capability": "external providers",
+      "source": "Google OAuth for sign-in and Google Gemini for email analysis",
+      "outcome": "Replace source auth with Lovable authentication and retain Gemini analysis",
+      "status": "pending",
+      "next_action": "Verify Google sign-in setup and Gemini analysis once required credentials are configured"
+    },
+    {
+      "capability": "public endpoints",
+      "source": "One TanStack server function for Gemini analysis; no standalone API route detected",
+      "outcome": "Recreate the app-internal analysis function with input validation and server-side auth",
+      "status": "in_progress",
+      "next_action": "Verify the signed-in analysis flow"
+    },
+    {
+      "capability": "callbacks",
+      "source": "Google OAuth redirect handled by the source auth provider",
+      "outcome": "Use Lovable authentication callbacks; no other callbacks detected",
+      "status": "pending",
+      "next_action": "Verify the configured sign-in redirect after Cloud setup"
+    },
+    {
+      "capability": "webhooks",
+      "source": "No webhooks detected",
+      "outcome": "None to migrate",
+      "status": "verified",
+      "next_action": "None"
+    },
+    {
+      "capability": "schedules",
+      "source": "No scheduled jobs detected",
+      "outcome": "None to migrate",
+      "status": "verified",
+      "next_action": "None"
+    },
+    {
+      "capability": "secrets",
+      "source": "GEMINI_API_KEY is referenced by the analysis function; source value was not included",
+      "outcome": "Keep Gemini integration and request its key through the secure form when live verification is ready; do not migrate old auth keys",
+      "status": "pending",
+      "next_action": "Explain the Gemini AI Studio key location, then request it securely"
+    },
+    {
+      "capability": "cutover",
+      "source": "Source project remains external; no cutover approval given",
+      "outcome": "No production cutover performed",
+      "status": "pending",
+      "next_action": "Verify the new preview and obtain user approval before any source shutdown or domain change"
+    },
+    {
+      "capability": "verification",
+      "source": "No source or user data export available for end-to-end comparison",
+      "outcome": "Pending preview, signed-in analysis, report, and account migration checks",
+      "status": "pending",
+      "next_action": "Verify all available paths and update remaining blockers after the preview"
+    }
+  ]
+}
