@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
+import { PasswordSchema } from "@/lib/auth.schema";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -29,6 +30,7 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [confirmationPending, setConfirmationPending] = useState(false);
+  const [passwordResetSent, setPasswordResetSent] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -50,6 +52,10 @@ function AuthPage() {
     event.preventDefault();
     if (!email || !password) {
       toast.error("Enter your email and password.");
+      return;
+    }
+    if (mode === "signup" && !PasswordSchema.safeParse(password).success) {
+      toast.error("Use at least 6 characters for your password.");
       return;
     }
 
@@ -96,6 +102,26 @@ function AuthPage() {
       toast.error(error instanceof Error ? error.message : "Google sign-in failed.");
     } finally {
       setGoogleLoading(false);
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    if (!email) {
+      toast.error("Enter your email address first.");
+      return;
+    }
+    setLoading(true);
+    setPasswordResetSent(false);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) throw error;
+      setPasswordResetSent(true);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not send a reset link.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -164,6 +190,20 @@ function AuthPage() {
               />
             </label>
 
+            {mode === "signin" && (
+              <div className="flex justify-end">
+                <Button
+                  type="button"
+                  variant="link"
+                  className="h-auto p-0 text-xs"
+                  disabled={loading || googleLoading}
+                  onClick={handlePasswordReset}
+                >
+                  Forgot password?
+                </Button>
+              </div>
+            )}
+
             <Button type="submit" disabled={loading || googleLoading} className="h-11 w-full font-semibold">
               {loading ? <Loader2 className="animate-spin" /> : <>{mode === "signin" ? "Sign in" : "Create account"}<ArrowRight /></>}
             </Button>
@@ -172,6 +212,11 @@ function AuthPage() {
           {confirmationPending && (
             <p role="status" className="mt-4 rounded-md border border-safe/30 bg-safe/10 p-3 text-sm text-safe">
               Check your inbox and confirm your email before signing in.
+            </p>
+          )}
+          {passwordResetSent && (
+            <p role="status" className="mt-4 rounded-md border border-safe/30 bg-safe/10 p-3 text-sm text-safe">
+              If an account uses this email, check your inbox for a password reset link.
             </p>
           )}
 
@@ -184,6 +229,7 @@ function AuthPage() {
               onClick={() => {
                 setMode(mode === "signin" ? "signup" : "signin");
                 setConfirmationPending(false);
+                setPasswordResetSent(false);
               }}
             >
               {mode === "signin" ? "Create one" : "Sign in"}

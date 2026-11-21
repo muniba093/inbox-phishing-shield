@@ -251,7 +251,7 @@ function PhishGuardPage() {
       <Nav onCta={scrollToAnalyzer} userEmail={userEmail} onSignOut={handleSignOut} />
       <Hero onCta={scrollToAnalyzer} />
 
-      <section ref={analyzerRef} className="relative px-4 py-20 md:py-28">
+      <section ref={analyzerRef} className="relative px-4 pt-10 pb-20 md:py-28">
         <div className="mx-auto max-w-6xl">
           <SectionHeader
             eyebrow="Analyzer"
@@ -405,9 +405,9 @@ function Hero({ onCta }: { onCta: () => void }) {
   }, []);
 
   return (
-    <section className="relative overflow-hidden px-4 pt-20 pb-24 md:pt-28 md:pb-32">
+    <section className="relative overflow-hidden px-4 pt-12 pb-12 md:pt-28 md:pb-32">
       <div className="mx-auto max-w-5xl text-center">
-        <div className="perspective-1000 relative mx-auto mb-10 flex size-32 items-center justify-center md:size-40">
+        <div className="perspective-1000 relative mx-auto mb-8 flex size-32 items-center justify-center md:mb-10 md:size-40">
           <div className="absolute inset-0 rounded-full border-2 border-primary/40 animate-radar" />
           <div className="absolute inset-0 rounded-full border-2 border-primary/40 animate-radar" style={{ animationDelay: "0.8s" }} />
           <div className="absolute inset-0 rounded-full border-2 border-warning/40 animate-radar" style={{ animationDelay: "1.6s" }} />
@@ -439,8 +439,9 @@ function Hero({ onCta }: { onCta: () => void }) {
           <Button onClick={onCta} size="lg" className="glow-primary h-12 px-8 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold">
             Analyze Email Now <Zap className="size-4" />
           </Button>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Lock className="size-4" /> Sent to Gemini for analysis · Not saved by PhishGuard
+          <div className="flex flex-col items-center gap-2 text-center text-sm text-muted-foreground sm:flex-row">
+            <Lock className="size-4 shrink-0" />
+            <span>Sent to Gemini for analysis · Not saved by PhishGuard</span>
           </div>
         </div>
       </div>
