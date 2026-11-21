@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { PhishingInputSchema } from "@/lib/phishing.schema";
+import {
+  PhishingInputSchema,
+  SocialProfileInputSchema,
+  WebsiteInputSchema,
+} from "@/lib/phishing.schema";
 
 const validInput = { subject: "", sender: "", body: "x" };
 
@@ -20,5 +24,41 @@ describe("phishing analysis input limits", () => {
     expect(PhishingInputSchema.safeParse({ ...validInput, body: "x".repeat(20000) }).success).toBe(true);
     expect(PhishingInputSchema.safeParse({ ...validInput, body: "" }).success).toBe(false);
     expect(PhishingInputSchema.safeParse({ ...validInput, body: "x".repeat(20001) }).success).toBe(false);
+  });
+});
+
+describe("social profile detector input", () => {
+  const validProfile = {
+    platform: "Instagram",
+    profileUrl: "",
+    displayName: "",
+    username: "example",
+    bio: "",
+    accountAge: "",
+    followers: "",
+    following: "",
+    additionalDetails: "",
+  };
+
+  it("requires a profile URL, username, or display name", () => {
+    expect(SocialProfileInputSchema.safeParse(validProfile).success).toBe(true);
+    expect(SocialProfileInputSchema.safeParse({ ...validProfile, username: "" }).success).toBe(false);
+  });
+
+  it("accepts only one of the supported social platforms", () => {
+    expect(SocialProfileInputSchema.safeParse({ ...validProfile, platform: "X" }).success).toBe(true);
+    expect(SocialProfileInputSchema.safeParse({ ...validProfile, platform: "Unknown Network" }).success).toBe(false);
+  });
+});
+
+describe("website detector input", () => {
+  it("accepts HTTP and HTTPS website addresses", () => {
+    expect(WebsiteInputSchema.safeParse({ websiteUrl: "https://example.com", pageContent: "" }).success).toBe(true);
+    expect(WebsiteInputSchema.safeParse({ websiteUrl: "http://example.com", pageContent: "" }).success).toBe(true);
+  });
+
+  it("rejects non-web protocols and page text over 10,000 characters", () => {
+    expect(WebsiteInputSchema.safeParse({ websiteUrl: "ftp://example.com", pageContent: "" }).success).toBe(false);
+    expect(WebsiteInputSchema.safeParse({ websiteUrl: "https://example.com", pageContent: "x".repeat(10001) }).success).toBe(false);
   });
 });
