@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { PasswordSchema } from "@/lib/auth.schema";
 
 export const Route = createFileRoute("/auth")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Sign in · PhishGuard AI" },
@@ -17,6 +18,7 @@ export const Route = createFileRoute("/auth")({
       { property: "og:description", content: "Secure access to PhishGuard AI email analysis." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "robots", content: "noindex" },
     ],
   }),
   component: AuthPage,

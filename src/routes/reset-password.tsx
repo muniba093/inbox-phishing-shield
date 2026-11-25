@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { PasswordSchema } from "@/lib/auth.schema";
 
 export const Route = createFileRoute("/reset-password")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Choose a new password · PhishGuard AI" },
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/reset-password")({
       { property: "og:description", content: "Securely update your PhishGuard AI account password." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "robots", content: "noindex" },
     ],
   }),
   component: ResetPasswordPage,
