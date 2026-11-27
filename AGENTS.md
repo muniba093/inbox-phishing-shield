@@ -30,7 +30,7 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## Migration architecture
-- Keep client-invoked analysis in `src/lib/*.functions.ts`, with shared input and result schemas in `src/lib/*.schema.ts`; require a verified Cloud session before calling the Gemini connector so email content and credentials remain server-side.
+- Keep client-invoked analysis in `src/lib/*.functions.ts`, with shared input and result schemas in `src/lib/*.schema.ts`; require a verified Cloud session before calling Google's API directly so submitted content and the user's API key remain server-side.
 
-Why: TanStack server functions are the supported boundary for authenticated, secret-backed application work.
+Why: Authenticated server functions keep third-party credentials and sensitive scan content out of the browser.
 - Generate sitemap URLs from each route's explicit `staticData.sitemap` decision so new pages are considered deliberately and private routes stay excluded.

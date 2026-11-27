@@ -76,19 +76,17 @@ async function requestGeminiAnalysis<T>(
   userMessage: string,
   schema: z.ZodType<T>,
 ): Promise<T> {
-  const lovableApiKey = process.env["LOVABLE_API_KEY"];
-  const connectionApiKey = process.env["UDC_GOOGLE_GEMINI_API_API_KEY"];
-  if (!lovableApiKey || !connectionApiKey) {
-    throw new Error("Gemini analysis is not configured yet.");
+  const googleApiKey = process.env["GOOGLE_API_KEY"];
+  if (!googleApiKey) {
+    throw new Error("Gemini API key is not configured. Add your key in Project Settings → Secrets.");
   }
 
   const response = await fetch(
-    "https://connector-gateway.lovable.dev/udc_google_gemini_api/v1beta/models/gemini-2.5-flash:generateContent",
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${lovableApiKey}`,
-        "X-Connection-Api-Key": connectionApiKey,
+        "x-goog-api-key": googleApiKey,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
