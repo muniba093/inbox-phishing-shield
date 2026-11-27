@@ -259,12 +259,14 @@ import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/auth")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Sign in · PhishGuard AI" },
       { name: "description", content: "Sign in to PhishGuard AI with email or Google to start scanning emails for phishing threats." },
       { property: "og:title", content: "Sign in · PhishGuard AI" },
       { property: "og:description", content: "Sign in to PhishGuard AI." },
+      { name: "robots", content: "noindex" },
     ],
   }),
   component: AuthPage,
@@ -290,7 +292,10 @@ function AuthPage() {
 
   const handleEmail = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) return toast.error("Enter email and password");
+    if (!email || !password) {
+      toast.error("Enter email and password");
+      return;
+    }
     setLoading(true);
     try {
       if (mode === "signup") {
